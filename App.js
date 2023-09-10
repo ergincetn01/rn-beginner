@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Button,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
 export default function App() {
   const [newGoal, setNewGoal] = useState("");
@@ -12,7 +20,11 @@ export default function App() {
   function goalAddHandler() {
     console.log(newGoal);
 
-    setGoals((currentGoals) => [...currentGoals, newGoal]);
+    setGoals((currentGoals) => [
+      ...currentGoals,
+
+      { text: newGoal, key: Math.random().toString() },
+    ]);
     reset();
   }
 
@@ -31,24 +43,24 @@ export default function App() {
         <Button title="Add goal" onPress={goalAddHandler} />
       </View>
       <Text style={styles.listTitle}>List of goals</Text>
-      <View
-        style={{
-          flexDirection: "column",
-          justifyContent: "center",
-          margin: "auto",
-        }}
-      >
-        {/* make the appereance => index inside a circle with padding in the same row the title of goal */}
-        {goals.map((goal) => (
-          <View style={styles.goalItem} key={goal}>
-            <View style={styles.indexContainer}>
-              <Text style={styles.indexText}> {goals.indexOf(goal) + 1}</Text>
-            </View>
-            <Text style={styles.goalText}>
-              {goals.indexOf(goal) + 1} - {goal}
-            </Text>
-          </View>
-        ))}
+      {/* make the appereance => index inside a circle with padding in the same row the title of goal */}
+      {/* <View style={styles.indexContainer}>
+          <Text style={styles.indexText}> {goals.indexOf(goal) + 1}</Text>
+          </View> */}
+      <View>
+        <FlatList
+          data={goals}
+          renderItem={(itemData) => {
+            return (
+              <View style={styles.goalItem}>
+                <Text style={styles.goalText}>{itemData.item.text}</Text>
+              </View>
+            );
+          }}
+          keyExtractor={(item, index) => {
+            return item.key;
+          }}
+        />
 
         <View style={styles.goalsContainer}></View>
       </View>
