@@ -11,7 +11,7 @@ export default function App() {
 
   function goalAddHandler() {
     console.log(newGoal);
-    
+
     setGoals((currentGoals) => [...currentGoals, newGoal]);
     reset();
   }
@@ -30,14 +30,27 @@ export default function App() {
         />
         <Button title="Add goal" onPress={goalAddHandler} />
       </View>
-      <View style={styles.goalsContainer}>
-        <Text>List of goals</Text>
-
+      <Text style={styles.listTitle}>List of goals</Text>
+      <View
+        style={{
+          flexDirection: "column",
+          justifyContent: "center",
+          margin: "auto",
+        }}
+      >
+        {/* make the appereance => index inside a circle with padding in the same row the title of goal */}
         {goals.map((goal) => (
-          <Text key={goal}>
-            {goals.indexOf(goal) + 1} {goal}{" "}
-          </Text>
+          <View style={styles.goalItem} key={goal}>
+            <View style={styles.indexContainer}>
+              <Text style={styles.indexText}> {goals.indexOf(goal) + 1}</Text>
+            </View>
+            <Text style={styles.goalText}>
+              {goals.indexOf(goal) + 1} - {goal}
+            </Text>
+          </View>
         ))}
+
+        <View style={styles.goalsContainer}></View>
       </View>
     </View>
   );
@@ -57,6 +70,10 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
     borderBottomColor: "#cccccc",
   },
+  listTitle: {
+    margin: 5,
+    padding: 5,
+  },
   textInput: {
     borderWidth: 1,
     borderColor: "#cccccc",
@@ -66,5 +83,27 @@ const styles = StyleSheet.create({
   },
   goalsContainer: {
     flex: 5,
+    flexDirection: "column",
+  },
+  goalItem: {
+    padding: 6,
+    backgroundColor: "#5e0acc",
+    margin: 8,
+    borderRadius: 6,
+  },
+  indexContainer: {
+    margin: "auto",
+    justifyContent: "center",
+    flexDirection: "column",
+    width: 40,
+    height: 40,
+    backgroundColor: "yellow",
+  },
+  indexText: {
+    color: "black",
+    fontWeight: "bold",
+  },
+  goalText: {
+    color: "white",
   },
 });
