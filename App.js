@@ -1,15 +1,26 @@
 import { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 import GoalItem from "./components/GoalItem";
 import GoalAdd from "./components/GoalAdd";
 import CaseStudy from "./components/CaseStudy";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [newGoal, setNewGoal] = useState("");
+  const [isVisible, setVisible] = useState(false);
+
   const [goals, setGoals] = useState([]);
 
   function reset() {
     setNewGoal("");
+  }
+
+  function openModal() {
+    setVisible(true);
+  }
+
+  function closeModal() {
+    setVisible(false);
   }
 
   function goalAddHandler(enteredText) {
@@ -18,35 +29,45 @@ export default function App() {
       { text: enteredText, id: Math.random().toString() },
     ]);
     reset();
+    closeModal();
   }
 
   function deleteGoal(id) {
-    setGoals(goals=> {
-      return goals.filter((goal)=> goal.id !==id)
-    })
+    setGoals((goals) => {
+      return goals.filter((goal) => goal.id !== id);
+    });
   }
   return (
-    // <View style={styles.appContainer}>
-    //   <CaseStudy />
-    // </View>
+    <>
+   
+    <StatusBar style="light"/>
     <View style={styles.appContainer}>
+      <Button title="Add new goal" color="#f31282" onPress={openModal} />
       <GoalAdd
         addGoal={goalAddHandler}
+        isVisible={isVisible}
+        onCancel={closeModal}
       />
       <Text style={styles.listTitle}>List of goals</Text>
       <View>
         <FlatList
           data={goals}
           renderItem={(itemData) => {
-            return <GoalItem text={itemData.item.text} id={itemData.item.id} onDeleteGoal={deleteGoal} />;
+            return (
+              <GoalItem
+                text={itemData.item.text}
+                id={itemData.item.id}
+                onDeleteGoal={deleteGoal}
+              />
+            );
           }}
           keyExtractor={(item, index) => {
             return item.id;
           }}
         />
-        <View style={styles.goalsContainer}></View>
       </View>
-    </View>
+    </View> 
+    </>
   );
 }
 
@@ -57,11 +78,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   listTitle: {
-    margin: 5,
+    marginTop: 15,
     padding: 5,
-  },
-  goalsContainer: {
-    flex: 5,
-    flexDirection: "column",
+    color: "white",
+    textAlign: "center",
   },
 });

@@ -5,9 +5,10 @@ function CaseStudy() {
 
   return (
     <View style={styles.main}>
-        <View>
-            <image />
-        </View>
+        {/* <View>
+            <Image source= eduloglogo position: center, top>
+            Two columns with bordered buttons/elements
+        </View> */}
       <FlatList/>
     </View>
   );
