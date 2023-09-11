@@ -24,22 +24,21 @@ export default function App() {
     reset();
   }
 
-  function inputHandler(enteredText) {
-    setNewGoal(enteredText);
+
+  function deleteGoal (){
+    console.log("deleted");
   }
   return (
     <View style={styles.appContainer}>
       <GoalAdd
         addGoal={goalAddHandler}
-        // goalTitle={newGoal}
-        // handleInput={inputHandler}
       />
       <Text style={styles.listTitle}>List of goals</Text>
       <View>
         <FlatList
           data={goals}
           renderItem={(itemData) => {
-            return <GoalItem text={itemData.item.text} />;
+            return <GoalItem text={itemData.item.text} onDeleteGoal={deleteGoal()} />;
           }}
           keyExtractor={(item, index) => {
             return item.key;
